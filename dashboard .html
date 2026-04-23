@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>⚡ CYBER CHEAT HUB · DETAILED COMMANDS · iptables + Git + Docker + Linux</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --glow-primary: #00ffc3;
+            --glow-red: #ff3a6f;
+            --glow-blue: #2a6eff;
+            --bg-deep: #0a0c12;
+            --bg-card: #0f1119;
+            --bg-panel: #080b10;
+            --border-glow: rgba(0, 255, 195, 0.25);
+            --text-main: #eef5ff;
+            --text-dim: #a5b4d0;
+            --accent-cyan: #00e5ff;
+            --accent-cyan-dark: #0088aa;
+        }
+
+        body {
+            background: radial-gradient(circle at 20% 30%, #0b0e17, #03060c);
+            font-family: 'Inter', system-ui, 'Segoe UI', 'Roboto', monospace;
+            color: var(--text-main);
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(0deg, rgba(0, 255, 195, 0.02) 0px, rgba(0, 255, 195, 0.02) 2px, transparent 2px, transparent 6px);
+            z-index: 999;
+        }
+
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .cyber-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-glow);
+            padding-bottom: 1rem;
+        }
+        .title-section h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, #00ffc3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 5px rgba(0,255,195,0.3);
+        }
+        .badge-panel {
+            display: flex;
+            gap: 1rem;
+        }
+        .stat-badge {
+            background: rgba(0, 255, 195, 0.08);
+            border: 0.5px solid rgba(0,255,195,0.3);
+            border-radius: 40px;
+            padding: 0.3rem 1rem;
+            font-size: 0.75rem;
+            font-family: monospace;
+            backdrop-filter: blur(4px);
+        }
+
+        .control-panel {
+            background: rgba(8, 11, 18, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            border: 0.5px solid var(--border-glow);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        }
+        .search-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 1rem;
+        }
+        .search-row input {
+            flex: 1;
+            background: #0c0f1a;
+            border: 1px solid #2a2f3f;
+            border-radius: 60px;
+            padding: 12px 20px;
+            color: #eef5ff;
+            font-size: 1rem;
+            font-family: monospace;
+            transition: 0.2s;
+        }
+        .search-row input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 8px rgba(0,229,255,0.4);
+        }
+        .tool-selector {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            border-bottom: 0.5px dashed #2a2f44;
+            padding-bottom: 0.8rem;
+        }
+        .tool-btn {
+            background: transparent;
+            border: 1px solid #2a2f4a;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: var(--text-dim);
+            backdrop-filter: blur(4px);
+        }
+        .tool-btn.active {
+            background: var(--accent-cyan-dark);
+            border-color: var(--accent-cyan);
+            color: white;
+            box-shadow: 0 0 6px var(--accent-cyan);
+        }
+        .pill-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .cat-pill {
+            cursor: pointer;
+            font-size: 0.75rem;
+            padding: 5px 14px;
+            border-radius: 30px;
+            background: #0f1220;
+            border: 0.5px solid #252b3d;
+            transition: all 0.15s;
+            font-weight: 500;
+            font-family: monospace;
+        }
+        .cat-pill.active-cat {
+            background: #00e5ff20;
+            border-color: #00e5ff;
+            color: #00e5ff;
+            box-shadow: 0 0 4px cyan;
+        }
+
+        .cards-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .command-card {
+            background: rgba(15, 17, 25, 0.95);
+            backdrop-filter: blur(2px);
+            border: 1px solid #1f253e;
+            border-radius: 24px;
+            transition: all 0.2s;
+            cursor: pointer;
+            width: 100%;
+            display: block;
+        }
+        .command-card:hover {
+            border-color: var(--accent-cyan);
+            background: #0f1222;
+            transform: translateX(4px);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 1.2rem 1.5rem;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        .tool-tag {
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 4px 14px;
+            border-radius: 20px;
+            background: #1a1f2e;
+            letter-spacing: 0.5px;
+            border-left: 3px solid;
+            flex-shrink: 0;
+        }
+        .tool-iptables { border-left-color: #ff3a6f; color: #ff8aae; }
+        .tool-git { border-left-color: #f97316; color: #fdba74; }
+        .tool-docker { border-left-color: #00e5ff; color: #7dd3fc; }
+        .tool-linux { border-left-color: #a855f7; color: #c084fc; }
+
+        .cmd-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            flex: 1;
+            letter-spacing: -0.2px;
+            color: var(--text-main);
+        }
+        .chev {
+            font-size: 13px;
+            opacity: 0.7;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .command-card.open .chev {
+            transform: rotate(90deg);
+        }
+        .detail-panel {
+            display: none;
+            padding: 0 1.5rem 1.5rem 1.5rem;
+            border-top: 0.5px solid #1f2740;
+            margin-top: 0;
+            width: 100%;
+        }
+        .command-card.open .detail-panel {
+            display: block;
+            animation: fadeSlide 0.2s ease;
+        }
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(-5px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .desc-text {
+            font-size: 0.95rem;
+            color: #cbd5e6;
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+        .explanation {
+            background: #070a12;
+            border-radius: 18px;
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            border-left: 4px solid #00e5ff;
+            margin-bottom: 16px;
+            font-family: monospace;
+            line-height: 1.5;
+        }
+        .example-box {
+            background: #0a0e18;
+            border-radius: 18px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border: 0.5px solid #2a3a5a;
+        }
+        .example-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #00e5ff;
+            margin-bottom: 6px;
+        }
+        .code-box {
+            background: #020408;
+            border-radius: 18px;
+            padding: 14px 16px;
+            font-family: 'Fira Code', 'SF Mono', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            position: relative;
+            border: 0.5px solid #2a2f44;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+        .code-box:first-of-type {
+            margin-top: 0;
+        }
+        .copy-code-btn {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            background: #1a1f30;
+            border: none;
+            border-radius: 30px;
+            padding: 5px 14px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: #b0c4ff;
+            transition: 0.1s;
+            font-family: monospace;
+        }
+        .copy-code-btn:hover {
+            background: #00e5ff30;
+            color: white;
+        }
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: #7a85a3;
+            font-size: 1rem;
+        }
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #4a5568;
+            border-top: 0.5px solid #1e243b;
+            padding-top: 1rem;
+        }
+
+        @media (max-width: 700px) {
+            body { padding: 1rem; }
+            .card-header { flex-direction: column; align-items: flex-start; }
+            .code-box { font-size: 0.8rem; padding: 12px; }
+            .copy-code-btn { position: relative; top: 0; right: 0; margin-top: 8px; display: inline-block; }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <div class="cyber-header">
+        <div class="title-section">
+            <h1>⚡ CYBER CHEAT HUB · DETAILED COMMANDS</h1>
+            <div style="font-size: 0.8rem; letter-spacing: 2px;">IPTABLES · GIT · DOCKER · LINUX — complete reference with descriptions + examples</div>
+        </div>
+        <div class="badge-panel">
+            <div class="stat-badge">🛡️ SOC · DEVOPS · SRE</div>
+            <div class="stat-badge">📋 one‑click copy</div>
+        </div>
+    </div>
+
+    <div class="control-panel">
+        <div class="search-row">
+            <input type="text" id="globalSearch" placeholder="🔍 grep — search commands, descriptions, examples, ports, branches, volumes...">
+        </div>
+        <div class="tool-selector" id="toolSelector">
+            <button class="tool-btn" data-tool="all">⚡ ALL TOOLS</button>
+            <button class="tool-btn" data-tool="iptables">🛡️ IPTABLES</button>
+            <button class="tool-btn" data-tool="git">🐙 GIT</button>
+            <button class="tool-btn" data-tool="docker">🐳 DOCKER</button>
+            <button class="tool-btn" data-tool="linux">🐧 LINUX</button>
+        </div>
+        <div id="categoryFilterContainer"></div>
+    </div>
+
+    <div id="cardsContainer" class="cards-grid"></div>
+    <div class="footer">⚙️ click any card → expand & copy | each command includes: description, context, primary command + practical example</div>
+</div>
+
+<div id="toastMsg" style="position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#0f172ad9; backdrop-filter:blur(12px); padding:10px 24px; border-radius:60px; font-size:0.9rem; border:0.5px solid #00e5ff; z-index:2000; opacity:0; transition:0.2s; pointer-events:none; font-family:monospace;">✓ copied</div>
+
+<script>
+    // ============================================================
+    // IPTABLES - 20+ Detailed commands with description + example
+    // ============================================================
+    const iptablesCmds = [
+        {cat:"Block", title:"Block an IP Address", desc:"Drop all incoming traffic from a specific malicious IP address.", context:"Used in SOC incidents to instantly isolate a compromised host or attacker IP.", cmd:"iptables -A INPUT -s 192.168.1.100 -j DROP", example:"iptables -A INPUT -s 45.33.22.11 -j DROP  # blocks attacker IP", tool:"iptables"},
+        {cat:"Block", title:"Block an IP (All Directions)", desc:"Completely isolate an IP — block incoming, outgoing, and forwarded traffic.", context:"Prevents a compromised server from communicating with a C2 server in both directions.", cmd:"iptables -A INPUT -s 10.0.0.5 -j DROP\niptables -A OUTPUT -d 10.0.0.5 -j DROP\niptables -A FORWARD -s 10.0.0.5 -j DROP", example:"# Block malware C2 server completely\niptables -A OUTPUT -d 185.130.5.253 -j DROP", tool:"iptables"},
+        {cat:"Block", title:"Block a Subnet (CIDR)", desc:"Drop all traffic from an entire IP range (e.g., a malicious ASN block).", context:"Threat intelligence feeds often provide malicious /24 or /16 ranges.", cmd:"iptables -A INPUT -s 192.168.2.0/24 -j DROP", example:"iptables -A INPUT -s 45.0.0.0/16 -j DROP  # block entire malicious range", tool:"iptables"},
+        {cat:"Block", title:"Block Specific Port (Incoming)", desc:"Reject connections to a TCP port (e.g., close Telnet port 23).", context:"Hardening servers by blocking unnecessary services.", cmd:"iptables -A INPUT -p tcp --dport 23 -j DROP", example:"iptables -A INPUT -p tcp --dport 445 -j DROP  # block SMB from internet", tool:"iptables"},
+        {cat:"Block", title:"Block Outgoing Traffic to a Port", desc:"Prevent server from making outbound connections on a specific port.", context:"Containment when a host may be beaconing to a C2 on a known port.", cmd:"iptables -A OUTPUT -p tcp --dport 4444 -j DROP", example:"iptables -A OUTPUT -p tcp --dport 1337 -j DROP  # block reverse shell port", tool:"iptables"},
+        {cat:"Block", title:"Block ICMP (Ping)", desc:"Silently drop all incoming ping requests to reduce host visibility.", context:"Make server invisible to ping sweeps and basic reconnaissance.", cmd:"iptables -A INPUT -p icmp --icmp-type echo-request -j DROP", example:"iptables -A INPUT -p icmp --icmp-type echo-request -s 10.0.0.0/8 -j DROP", tool:"iptables"},
+        {cat:"Allow", title:"Allow Specific IP (Whitelist)", desc:"Permit only trusted IPs to connect to your server.", context:"Management interfaces or jump hosts need whitelisting.", cmd:"iptables -I INPUT -s 203.0.113.10 -j ACCEPT", example:"iptables -I INPUT 1 -s 192.168.10.5 -j ACCEPT  # allow admin workstation", tool:"iptables"},
+        {cat:"Allow", title:"Allow Established Connections", desc:"Permit return traffic for already established connections.", context:"CRITICAL — without this, responses to your own outbound requests would be dropped.", cmd:"iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT", example:"# Add as first rule in INPUT chain\niptables -I INPUT 1 -m state --state ESTABLISHED,RELATED -j ACCEPT", tool:"iptables"},
+        {cat:"Allow", title:"Allow Loopback Interface", desc:"Ensure localhost traffic is never blocked.", context:"Required for local services, databases, and IPC to function.", cmd:"iptables -A INPUT -i lo -j ACCEPT", example:"iptables -A OUTPUT -o lo -j ACCEPT  # allow loopback output as well", tool:"iptables"},
+        {cat:"Port", title:"Allow TCP Port (Inbound)", desc:"Open a port for incoming connections (e.g., HTTP/HTTPS).", context:"Web servers need port 80 and 443 open for traffic.", cmd:"iptables -A INPUT -p tcp --dport 80 -j ACCEPT", example:"iptables -A INPUT -p tcp --dport 443 -j ACCEPT  # allow HTTPS", tool:"iptables"},
+        {cat:"Port", title:"Allow Multiple Ports (Multiport)", desc:"Open several non-contiguous ports in a single rule.", context:"Reduce rule count and improve readability.", cmd:"iptables -A INPUT -p tcp -m multiport --dports 22,80,443 -j ACCEPT", example:"iptables -A INPUT -p tcp -m multiport --dports 8443,8080,9090 -j ACCEPT", tool:"iptables"},
+        {cat:"Port", title:"Allow Port Range", desc:"Accept connections across a contiguous port range.", context:"Useful for passive FTP, RTP, or game servers.", cmd:"iptables -A INPUT -p tcp --dport 20000:21000 -j ACCEPT", example:"iptables -A INPUT -p udp --dport 10000:20000 -j ACCEPT", tool:"iptables"},
+        {cat:"NAT", title:"IP Masquerading (NAT Gateway)", desc:"Let internal machines share a single public IP (source NAT).", context:"Linux router/gateway configuration for internet sharing.", cmd:"iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE", example:"# Enable NAT for internal network on eth1\niptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE", tool:"iptables"},
+        {cat:"NAT", title:"DNAT — Port Forwarding", desc:"Forward external port to an internal host.", context:"Expose internal services to the internet via gateway.", cmd:"iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 192.168.1.50:443", example:"iptables -t nat -A PREROUTING -p tcp --dport 8080 -j DNAT --to-destination 10.0.0.22:80", tool:"iptables"},
+        {cat:"NAT", title:"SNAT — Static Source IP", desc:"Force outbound traffic to appear from a specific IP address.", context:"Use when you have multiple public IPs and need a fixed egress IP.", cmd:"iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source 203.0.113.5", example:"iptables -t nat -A POSTROUTING -o eth1 -j SNAT --to-source 192.168.1.250", tool:"iptables"},
+        {cat:"Inspect", title:"List All Rules with Line Numbers", desc:"View complete ruleset with line numbers and packet counters.", context:"Essential for incident response and debugging firewall issues.", cmd:"iptables -L -v -n --line-numbers", example:"iptables -L INPUT -v -n --line-numbers  # view INPUT chain only", tool:"iptables"},
+        {cat:"Inspect", title:"List NAT Table Rules", desc:"View all NAT rules including PREROUTING, POSTROUTING.", context:"Debug DNAT/SNAT and port forwarding issues.", cmd:"iptables -t nat -L -v -n --line-numbers", example:"iptables -t nat -L PREROUTING -n -v", tool:"iptables"},
+        {cat:"Inspect", title:"Watch Live Packet Counters", desc:"Monitor firewall rules in real-time with watch command.", context:"See if block rules are being triggered during an incident.", cmd:"watch -n1 iptables -L -v -n", example:"watch -n2 'iptables -L INPUT -v -n | grep DROP'", tool:"iptables"},
+        {cat:"Inspect", title:"Log Dropped Packets", desc:"Log packets before dropping them for forensics.", context:"Audit trail for SOC investigations.", cmd:"iptables -A INPUT -j LOG --log-prefix \"[DROP] \" --log-level 4\niptables -A INPUT -j DROP", example:"journalctl -k | grep DROP  # check logs", tool:"iptables"},
+        {cat:"Inspect", title:"Rate Limit Connections (DDoS Mitigation)", desc:"Limit new SSH connections per IP to prevent brute force.", context:"Protect against credential stuffing and slow DDoS.", cmd:"iptables -A INPUT -p tcp --dport 22 -m hashlimit --hashlimit-above 25/minute --hashlimit-burst 10 --hashlimit-mode srcip --hashlimit-name ssh-limit -j DROP", example:"# Limit HTTP connections\niptables -A INPUT -p tcp --dport 443 -m limit --limit 100/second -j ACCEPT", tool:"iptables"},
+        {cat:"Save/Restore", title:"Persist Rules (Debian/Ubuntu)", desc:"Save current ruleset to survive reboots.", context:"Prevents losing firewall configuration after system restart.", cmd:"iptables-save > /etc/iptables/rules.v4", example:"iptables-save > /root/firewall-backup-$(date +%Y%m%d).v4", tool:"iptables"},
+        {cat:"Save/Restore", title:"Restore Rules from File", desc:"Load a previously saved ruleset.", context:"Rollback to known good configuration after failed changes.", cmd:"iptables-restore < /etc/iptables/rules.v4", example:"iptables-restore < /root/firewall-backup.v4", tool:"iptables"},
+        {cat:"Chain/Table", title:"Set Default Policy to DROP", desc:"Block everything by default, require explicit ALLOW rules.", context:"Hardened baseline for production servers.", cmd:"iptables -P INPUT DROP\niptables -P FORWARD DROP\niptables -P OUTPUT ACCEPT", example:"# After setting DROP, add ACCEPT rules for necessary services", tool:"iptables"},
+        {cat:"Chain/Table", title:"Create Custom Chain", desc:"Create a named chain for logical grouping of rules.", context:"Organize complex rulesets for threat hunting or specific services.", cmd:"iptables -N SUSPICIOUS", example:"iptables -A INPUT -s 10.0.0.0/8 -j SUSPICIOUS", tool:"iptables"},
+        {cat:"Chain/Table", title:"Delete Rule by Line Number", desc:"Remove a specific rule using its line number.", context:"Precise deletion without affecting other rules.", cmd:"iptables -D INPUT 3", example:"# Find line number first\niptables -L --line-numbers\niptables -D INPUT 5", tool:"iptables"}
+    ];
+
+    // ============================================================
+    // GIT - 20+ Detailed commands with description + example
+    // ============================================================
+    const gitCmds = [
+        {cat:"Snapshots", title:"Initialize Repository", desc:"Create a new empty Git repository in the current directory.", context:"Start version controlling a new project.", cmd:"git init", example:"cd my-project && git init  # creates .git folder", tool:"git"},
+        {cat:"Snapshots", title:"Stage Files (git add)", desc:"Add files to the staging area before commit.", context:"Select which changes to include in the next snapshot.", cmd:"git add file1.js\ngit add .\ngit add *.js", example:"git add index.js README.md package.json", tool:"git"},
+        {cat:"Snapshots", title:"View Status", desc:"Show working directory and staging area status.", context:"Know what's modified, staged, or untracked.", cmd:"git status\n# Short status\ngit status -s", example:"git status --ignored  # also show ignored files", tool:"git"},
+        {cat:"Snapshots", title:"Commit Changes", desc:"Record staged changes to repository history.", context:"Save snapshots with meaningful messages.", cmd:"git commit -m \"feat: add authentication\"\n# Long message\ngit commit", example:"git commit -m \"fix: resolve memory leak in parser\"", tool:"git"},
+        {cat:"Snapshots", title:"Skip Staging (commit -am)", desc:"Stage and commit in one step for tracked files only.", context:"Quick commits when you don't need fine-grained staging.", cmd:"git commit -am \"update config\"", example:"git commit -am \"hotfix: critical security patch\"", tool:"git"},
+        {cat:"Snapshots", title:"Remove Files", desc:"Remove files from working directory and staging area.", context:"Delete files and stage the deletion.", cmd:"git rm file1.js\n# Remove from staging only\ngit rm --cached file1.js", example:"git rm --cached .env  # stop tracking but keep locally", tool:"git"},
+        {cat:"Snapshots", title:"Rename/Move Files", desc:"Move or rename files, staging the change automatically.", context:"Git tracks renames intelligently.", cmd:"git mv oldname.txt newname.txt", example:"git mv src/utils.js src/helpers.js", tool:"git"},
+        {cat:"Snapshots", title:"View Changes (git diff)", desc:"See unstaged or staged changes before commit.", context:"Review what you're about to commit.", cmd:"git diff              # unstaged changes\ngit diff --staged      # staged changes", example:"git diff HEAD~1 HEAD  # changes between commits", tool:"git"},
+        {cat:"Snapshots", title:"Unstage Files (restore)", desc:"Remove files from staging area.", context:"Undo git add before committing.", cmd:"git restore --staged file.js", example:"git restore --staged .  # unstage everything", tool:"git"},
+        {cat:"Snapshots", title:"Discard Local Changes", desc:"Restore file from index to working directory.", context:"Undo uncommitted modifications.", cmd:"git restore file.js\ngit restore .\n# Remove untracked files\ngit clean -fd", example:"git restore --source=HEAD~2 file.js  # restore from older commit", tool:"git"},
+        {cat:"History", title:"View Commit History (git log)", desc:"Display full commit history with details.", context:"Track changes and find when bugs were introduced.", cmd:"git log --oneline --graph --decorate", example:"git log --since=\"2 weeks ago\" --author=\"john\"", tool:"git"},
+        {cat:"History", title:"Filter History", desc:"Limit commits by count, author, date, or message.", context:"Find specific commits quickly.", cmd:"git log -5\ngit log --author=\"Mosh\"\ngit log --grep=\"fix\"\ngit log -S\"function\"", example:"git log --before=\"2024-01-01\" --after=\"2023-12-01\"", tool:"git"},
+        {cat:"History", title:"View a Commit (git show)", desc:"Display details of a specific commit.", context:"Inspect what changed in a commit.", cmd:"git show HEAD~2\ngit show abc123\ngit show HEAD~2:file.txt", example:"git show --stat HEAD~3  # show file stats only", tool:"git"},
+        {cat:"History", title:"Compare Commits (diff)", desc:"See changes between two commits.", context:"Code review or debugging regressions.", cmd:"git diff HEAD~2 HEAD\ngit diff HEAD~2 HEAD file.txt", example:"git diff main..feature  # compare branches", tool:"git"},
+        {cat:"History", title:"Blame — Find Author of Lines", desc:"See who last modified each line of a file.", context:"Debugging who introduced a bug or change.", cmd:"git blame file.txt", example:"git blame -L 10,20 file.txt  # specific line range", tool:"git"},
+        {cat:"History", title:"Tagging", desc:"Mark specific commits with version tags.", context:"Release management and versioning.", cmd:"git tag v1.0\ngit tag -a v1.0 -m \"release\"\ngit tag -d v1.0", example:"git push origin v1.0  # push tag to remote", tool:"git"},
+        {cat:"Branching", title:"Create & Switch Branches", desc:"Create new branches to isolate features or experiments.", context:"Parallel development without affecting main codebase.", cmd:"git branch feature\ngit checkout feature\ngit switch -c hotfix", example:"git checkout -b feature/payment-gateway  # create and switch", tool:"git"},
+        {cat:"Branching", title:"List Branches", desc:"Show all local or remote branches.", context:"See what branches exist and which are merged.", cmd:"git branch\ngit branch -r\ngit branch -a\ngit branch --merged", example:"git branch --no-merged  # branches not yet merged", tool:"git"},
+        {cat:"Merging", title:"Merge Branches", desc:"Integrate changes from one branch into another.", context:"Combine feature branches back into main branch.", cmd:"git checkout main\ngit merge feature\ngit merge --no-ff feature", example:"git merge --squash feature  # squash all commits into one", tool:"git"},
+        {cat:"Merging", title:"Abort Merge", desc:"Cancel a merge that has conflicts.", context:"Start over when merge becomes too complex.", cmd:"git merge --abort", example:"# After conflicts, abort and try rebase instead", tool:"git"},
+        {cat:"Collaboration", title:"Clone Repository", desc:"Copy a remote repository locally.", context:"Get a copy of existing project from GitHub/GitLab.", cmd:"git clone <url>\ngit clone <url> my-folder", example:"git clone https://github.com/company/app.git --depth 1  # shallow clone", tool:"git"},
+        {cat:"Collaboration", title:"Fetch, Pull, Push", desc:"Sync with remote repositories.", context:"Team collaboration and backup to remote servers.", cmd:"git fetch origin\ngit pull origin main\ngit push origin main", example:"git push -u origin feature-branch  # set upstream", tool:"git"},
+        {cat:"Collaboration", title:"Manage Remotes", desc:"List, add, or remove remote repositories.", context:"Work with multiple remotes (origin, upstream).", cmd:"git remote -v\ngit remote add upstream <url>\ngit remote rm upstream", example:"git remote show origin  # detailed remote info", tool:"git"},
+        {cat:"Rewriting", title:"Undo Commits (reset)", desc:"Move branch pointer to previous commit (rewrite history).", context:"Remove unwanted commits before pushing.", cmd:"git reset --soft HEAD~1  # keep changes staged\ngit reset --mixed HEAD~1 # unstage changes\ngit reset --hard HEAD~1   # discard all", example:"git reset --hard origin/main  # reset to remote state", tool:"git"},
+        {cat:"Rewriting", title:"Revert Commits", desc:"Create new commit that undoes changes (safe for shared history).", context:"Undo commits without rewriting history.", cmd:"git revert abc123\ngit revert HEAD~3..HEAD", example:"git revert --no-commit HEAD~2..HEAD  # revert multiple, commit once", tool:"git"},
+        {cat:"Rewriting", title:"Recover Lost Commits (reflog)", desc:"Show history of where HEAD pointed.", context:"Recover commits after accidental reset or rebase.", cmd:"git reflog\ngit checkout HEAD@{2}", example:"git reflog show feature-branch", tool:"git"},
+        {cat:"Rewriting", title:"Amend Last Commit", desc:"Modify the most recent commit (message or content).", context:"Fix mistakes before pushing.", cmd:"git commit --amend -m \"new message\"\ngit commit --amend --no-edit", example:"git commit --amend --author=\"John <john@example.com>\"", tool:"git"},
+        {cat:"Rewriting", title:"Interactive Rebase", desc:"Rewrite history by reordering, squashing, or editing commits.", context:"Clean up commit history before merging.", cmd:"git rebase -i HEAD~5", example:"# Commands: pick, reword, edit, squash, fixup, drop", tool:"git"},
+        {cat:"Stashing", title:"Stash Changes", desc:"Temporarily save uncommitted changes to work on something else.", context:"Switch branches without committing half-finished work.", cmd:"git stash push -m \"WIP\"\ngit stash list\ngit stash apply\ngit stash pop", example:"git stash show stash@{1}\ngit stash drop stash@{1}", tool:"git"}
+    ];
+
+    // ============================================================
+    // DOCKER - 20+ Detailed commands with description + example
+    // ============================================================
+    const dockerCmds = [
+        {cat:"Basics", title:"Docker Version & Info", desc:"Display Docker version and system-wide information.", context:"Verify Docker installation and daemon status.", cmd:"docker --version\ndocker info\ndocker version", example:"docker version --format '{{.Server.Version}}'", tool:"docker"},
+        {cat:"Basics", title:"Docker System DF", desc:"Show Docker disk usage (images, containers, volumes).", context:"Monitor disk space used by Docker.", cmd:"docker system df\ndocker system df -v", example:"docker system df --format \"table {{.Type}}\\t{{.TotalCount}}\"", tool:"docker"},
+        {cat:"Images", title:"Pull & List Images", desc:"Download container images from registry and list local images.", context:"Get base images for your containers.", cmd:"docker pull nginx:alpine\ndocker images\ndocker image ls", example:"docker pull postgres:15 --platform linux/amd64", tool:"docker"},
+        {cat:"Images", title:"Build Image from Dockerfile", desc:"Create custom Docker images using a Dockerfile.", context:"Package your application with all dependencies.", cmd:"docker build -t myapp:latest .\ndocker build --no-cache -t myapp .", example:"docker build -t myapp:1.0 --build-arg VERSION=1.0 .", tool:"docker"},
+        {cat:"Images", title:"Remove Images", desc:"Delete local images to free up space.", context:"Clean up unused or old images.", cmd:"docker rmi myapp:latest\ndocker image prune\ndocker image prune -a", example:"docker rmi $(docker images -q)  # remove all images", tool:"docker"},
+        {cat:"Containers", title:"Run Container with Port Mapping", desc:"Start a container in background with host-to-container port binding.", context:"Deploy web applications accessible from outside.", cmd:"docker run -d -p 8080:80 --name web nginx", example:"docker run -d -p 3000:3000 -e NODE_ENV=production myapp", tool:"docker"},
+        {cat:"Containers", title:"Run Interactive Container", desc:"Start a container with interactive terminal for debugging.", context:"Explore container filesystem or run commands manually.", cmd:"docker run -it ubuntu bash\ndocker run -it --rm alpine sh", example:"docker run -it --entrypoint /bin/bash myapp", tool:"docker"},
+        {cat:"Containers", title:"Container Lifecycle Management", desc:"Stop, start, restart, and remove containers.", context:"Manage running application containers.", cmd:"docker stop web\ndocker start web\ndocker restart web\ndocker rm -f web", example:"docker stop $(docker ps -q)  # stop all running containers", tool:"docker"},
+        {cat:"Containers", title:"List Containers", desc:"Show running or all containers with details.", context:"See what containers are active.", cmd:"docker ps\ndocker ps -a\ndocker ps -a --format \"table {{.Names}}\\t{{.Status}}\"", example:"docker ps -a --filter status=exited", tool:"docker"},
+        {cat:"Containers", title:"Execute Commands in Container", desc:"Run commands inside a running container.", context:"Debug, run migrations, or admin tasks.", cmd:"docker exec -it web bash\ndocker exec web ls -la\ndocker exec -it db psql -U postgres", example:"docker exec -e VAR=value web env", tool:"docker"},
+        {cat:"Volumes", title:"Create & Mount Volumes", desc:"Persist data beyond container lifecycle using volumes.", context:"Databases and stateful applications need persistent storage.", cmd:"docker volume create pgdata\ndocker run -v pgdata:/var/lib/postgresql/data postgres", example:"docker run -v $(pwd)/data:/app/data myapp  # bind mount", tool:"docker"},
+        {cat:"Volumes", title:"Volume Management", desc:"List, inspect, and remove volumes.", context:"Manage persistent data storage.", cmd:"docker volume ls\ndocker volume inspect pgdata\ndocker volume rm pgdata\ndocker volume prune", example:"docker volume ls --filter dangling=true", tool:"docker"},
+        {cat:"Networks", title:"Create & Manage Networks", desc:"Create custom bridge networks for container isolation.", context:"Multi-container apps need network communication.", cmd:"docker network create mynet\ndocker run --network=mynet nginx\ndocker network ls\ndocker network inspect mynet", example:"docker network connect mynet web  # connect existing container", tool:"docker"},
+        {cat:"Logs", title:"View Container Logs", desc:"Stream logs from containers for debugging.", context:"Real-time debugging and monitoring.", cmd:"docker logs web\ndocker logs -f web\ndocker logs --tail 100 web", example:"docker logs --since 1h web | grep ERROR", tool:"docker"},
+        {cat:"Monitoring", title:"Container Stats", desc:"Live resource usage (CPU, memory, network).", context:"Monitor container performance.", cmd:"docker stats\ndocker stats --no-stream\ndocker stats web db", example:"docker stats --format \"table {{.Name}}\\t{{.CPUPerc}}\\t{{.MemUsage}}\"", tool:"docker"},
+        {cat:"Dockerfile", title:"Multi-stage Build", desc:"Optimize image size using multi-stage builds.", context:"Reduce final image size for production.", cmd:"# Example Dockerfile\nFROM node:18 AS builder\nWORKDIR /app\nCOPY . .\nRUN npm run build\n\nFROM nginx:alpine\nCOPY --from=builder /app/build /usr/share/nginx/html", example:"docker build -t react-app .", tool:"docker"},
+        {cat:"Compose", title:"Docker Compose Up & Down", desc:"Start/stop multi-container applications defined in YAML.", context:"Orchestrate microservices with one command.", cmd:"docker compose up -d\ndocker compose down\ndocker compose down -v", example:"docker compose up --build -d  # rebuild and start", tool:"docker"},
+        {cat:"Compose", title:"Compose Logs & PS", desc:"View logs and status of compose services.", context:"Monitor multi-container applications.", cmd:"docker compose ps\ndocker compose logs\ndocker compose logs -f web", example:"docker compose logs --tail=50 app", tool:"docker"},
+        {cat:"Compose", title:"Scale Services", desc:"Scale replicas of a service horizontally.", context:"Load balancing and high availability.", cmd:"docker compose up --scale app=3 -d", example:"docker compose up --scale worker=5 --scale web=2", tool:"docker"},
+        {cat:"Compose", title:"Execute in Compose Services", desc:"Run one-off commands inside service containers.", context:"Database migrations, debugging, admin tasks.", cmd:"docker compose exec app bash\ndocker compose exec web python manage.py migrate", example:"docker compose exec db pg_dump -U postgres > backup.sql", tool:"docker"},
+        {cat:"Security", title:"Scan Images for Vulnerabilities", desc:"Detect CVEs in container images before deployment.", context:"Shift-left security in CI/CD pipeline.", cmd:"docker scout cves nginx:latest\ndocker scan myapp:latest", example:"docker scout quickview myapp:latest", tool:"docker"},
+        {cat:"Security", title:"Run with Security Options", desc:"Run containers with read-only rootfs and dropped capabilities.", context:"Minimize attack surface.", cmd:"docker run --read-only --cap-drop=ALL --cap-add=NET_BIND_SERVICE nginx", example:"docker run --user 1000:1000 --security-opt=no-new-privileges myapp", tool:"docker"},
+        {cat:"Cleanup", title:"Prune Unused Resources", desc:"Remove all unused containers, networks, images, and volumes.", context:"Free up disk space on Docker host.", cmd:"docker system prune -a\ndocker system prune -a --volumes\ndocker container prune\ndocker image prune -a", example:"docker system prune -af --filter \"until=24h\"", tool:"docker"}
+    ];
+
+    // ============================================================
+    // LINUX - 25+ Detailed commands with description + example
+    // ============================================================
+    const linuxCmds = [
+        {cat:"File System", title:"List Files (ls)", desc:"Display directory contents with detailed information.", context:"Navigate and inspect file system.", cmd:"ls -la\nls -ltrh\nls -la | grep keyword", example:"ls -la --sort=size /var/log  # sort by size", tool:"linux"},
+        {cat:"File System", title:"Change Directory (cd)", desc:"Navigate between directories.", context:"Move around the filesystem.", cmd:"cd /var/log\ncd ~\ncd -\ncd ..", example:"cd /etc/nginx/sites-available/", tool:"linux"},
+        {cat:"File System", title:"Find Files (find)", desc:"Search for files by name, type, size, or content.", context:"Locate configuration files or log files quickly.", cmd:"find /home -name \"*.conf\"\nfind /var -type f -size +100M\nfind . -mtime -7", example:"find / -type f -name \"*.log\" -exec rm {} \\; 2>/dev/null", tool:"linux"},
+        {cat:"File System", title:"View File Content (cat/less/head/tail)", desc:"Display file contents with different pagers.", context:"Read logs, configs, or data files.", cmd:"cat file.txt\nless file.txt\nhead -20 file.txt\ntail -f file.txt", example:"tail -n 100 /var/log/syslog | grep error", tool:"linux"},
+        {cat:"File System", title:"Copy, Move, Remove (cp/mv/rm)", desc:"Copy, move, or delete files and directories.", context:"Basic file operations.", cmd:"cp source dest\ncp -r source_dir dest_dir\nmv old new\nrm file\nrm -rf directory", example:"cp -u source dest  # copy only if newer", tool:"linux"},
+        {cat:"Processes", title:"View Running Processes (ps/top/htop)", desc:"List all processes with CPU and memory usage.", context:"Monitor system performance and find rogue processes.", cmd:"ps aux\nps aux | grep nginx\ntop -b -n 1\nhtop", example:"ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head -10", tool:"linux"},
+        {cat:"Processes", title:"Kill Processes", desc:"Terminate processes by PID or name.", context:"Stop unresponsive or malicious processes.", cmd:"kill -9 <PID>\nkill -15 <PID>\npkill -f firefox\nkillall chrome", example:"pkill -f \"node server.js\"", tool:"linux"},
+        {cat:"Processes", title:"Background & Foreground Jobs", desc:"Run processes in background and bring to foreground.", context:"Multitasking in terminal.", cmd:"command &\nCtrl+Z (suspend)\nbg\nfg %1\njobs", example:"nohup long_running.sh &  # run even after logout", tool:"linux"},
+        {cat:"Networking", title:"Check Open Ports (ss/netstat/lsof)", desc:"List listening ports and established connections.", context:"Security audit — find unexpected open ports.", cmd:"ss -tulpn\nnetstat -tulpn\nlsof -i :80\nlsof -i -P -n", example:"ss -tulpn | grep LISTEN | grep -v 127.0.0.1", tool:"linux"},
+        {cat:"Networking", title:"HTTP Requests (curl/wget)", desc:"Make HTTP requests or download files.", context:"Test APIs, download packages, debug endpoints.", cmd:"curl -I https://example.com\ncurl -X POST -d 'key=value' https://api.example.com\nwget https://example.com/file.zip", example:"curl -H \"Authorization: Bearer token\" https://api.example.com/user", tool:"linux"},
+        {cat:"Networking", title:"Network Connectivity (ping/traceroute)", desc:"Test network connectivity and trace route.", context:"Diagnose network issues.", cmd:"ping -c 4 google.com\ntraceroute google.com\ntracepath google.com", example:"ping -c 10 -i 0.2 8.8.8.8", tool:"linux"},
+        {cat:"Networking", title:"DNS Lookup (dig/nslookup/host)", desc:"Query DNS records.", context:"Troubleshoot DNS resolution.", cmd:"dig google.com\nnslookup google.com\nhost -t A google.com", example:"dig +short MX gmail.com", tool:"linux"},
+        {cat:"Permissions", title:"Change File Permissions (chmod)", desc:"Modify read/write/execute permissions.", context:"Secure files and control access.", cmd:"chmod 755 script.sh\nchmod +x script.sh\nchmod -R 600 ~/.ssh/", example:"chmod 644 config.conf  # owner: rw, others: r", tool:"linux"},
+        {cat:"Permissions", title:"Change Ownership (chown)", desc:"Change file owner and group.", context:"Properly assign file ownership.", cmd:"chown user:group file.txt\nchown -R www-data:www-data /var/www/", example:"chown --reference=reference.txt target.txt  # copy ownership", tool:"linux"},
+        {cat:"Disk Usage", title:"Check Disk Space (df)", desc:"Monitor filesystem usage.", context:"Prevent disk full issues on production servers.", cmd:"df -h\ndf -i\ndf -h --total", example:"df -h | grep -E '^/dev/'", tool:"linux"},
+        {cat:"Disk Usage", title:"Directory Size (du)", desc:"Calculate directory sizes.", context:"Find large directories consuming space.", cmd:"du -sh /var/log\ndu -sh * | sort -rh | head -10", example:"du -h --max-depth=1 /home | sort -rh", tool:"linux"},
+        {cat:"Archiving", title:"Tar & Compression", desc:"Create/extract tar archives with gzip compression.", context:"Backup files or distribute software.", cmd:"tar -czvf backup.tar.gz /path\ntar -xzvf backup.tar.gz\ntar -tf backup.tar.gz", example:"tar -czvf logs-$(date +%Y%m%d).tar.gz /var/log/nginx/", tool:"linux"},
+        {cat:"Archiving", title:"Zip/Unzip", desc:"Create and extract zip archives.", context:"Cross-platform compression.", cmd:"zip -r archive.zip folder/\nunzip archive.zip -d destination/\nunzip -l archive.zip", example:"zip -e encrypted.zip file.txt  # encrypt with password", tool:"linux"},
+        {cat:"System Info", title:"Kernel & OS Version", desc:"Display operating system and kernel information.", context:"Check system compatibility and update status.", cmd:"uname -a\ncat /etc/os-release\nlsb_release -a\nhostnamectl", example:"uname -r  # kernel version only", tool:"linux"},
+        {cat:"System Info", title:"CPU & Memory Info", desc:"Show CPU architecture and memory details.", context:"Understand system resources.", cmd:"lscpu\ncat /proc/cpuinfo\nfree -h\ncat /proc/meminfo", example:"nproc  # number of CPU cores", tool:"linux"},
+        {cat:"Service Management", title:"Systemd Service Control", desc:"Start, stop, enable, and check status of services.", context:"Manage daemons like nginx, docker, ssh.", cmd:"systemctl status nginx\nsystemctl start nginx\nsystemctl stop nginx\nsystemctl restart nginx\nsystemctl enable nginx", example:"systemctl list-units --type=service --state=running", tool:"linux"},
+        {cat:"Service Management", title:"View Service Logs (journalctl)", desc:"Read systemd service logs.", context:"Debug service issues.", cmd:"journalctl -u nginx\njournalctl -u nginx -f\njournalctl -u nginx --since today\njournalctl -xe", example:"journalctl -u docker --since \"1 hour ago\"", tool:"linux"},
+        {cat:"Logs", title:"View Log Files (tail/head/grep)", desc:"Read system logs in real time or search history.", context:"Debug issues and audit system activity.", cmd:"tail -f /var/log/syslog\ngrep error /var/log/syslog\nless /var/log/auth.log", example:"tail -f /var/log/nginx/access.log | grep \"404\"", tool:"linux"},
+        {cat:"Cron Jobs", title:"Schedule Tasks with Crontab", desc:"Automate recurring tasks (backups, cleanups).", context:"Run scripts daily, hourly, or at specific times.", cmd:"crontab -e\ncrontab -l\ncrontab -r", example:"# Run backup every day at 2am\n0 2 * * * /usr/local/bin/backup.sh\n*/15 * * * * /usr/bin/curl https://healthcheck.example.com", tool:"linux"},
+        {cat:"SSH", title:"SSH Remote Access", desc:"Secure remote shell and key-based authentication.", context:"Remote server administration without passwords.", cmd:"ssh user@host\nssh -p 2222 user@host\nssh -i ~/.ssh/mykey.pem user@host", example:"ssh -J jumpuser@jumphost user@internal-host  # SSH jump host", tool:"linux"},
+        {cat:"SSH", title:"SSH Key Management", desc:"Generate and copy SSH keys for passwordless login.", context:"Secure and convenient authentication.", cmd:"ssh-keygen -t rsa -b 4096\nssh-keygen -t ed25519\nssh-copy-id user@host", example:"ssh-keygen -t rsa -b 4096 -C \"user@example.com\" -f ~/.ssh/github_key", tool:"linux"},
+        {cat:"SSH", title:"Secure Copy (scp/rsync)", desc:"Copy files securely between hosts.", context:"Transfer files to remote servers.", cmd:"scp file.txt user@host:/path/\nscp -r folder/ user@host:/path/\nrsync -avz /local/ user@host:/remote/", example:"rsync -avz --delete /var/www/ user@backup:/backup/www/", tool:"linux"},
+        {cat:"Package Management", title:"APT (Debian/Ubuntu)", desc:"Install, update, and remove packages.", context:"Software management on Debian-based systems.", cmd:"sudo apt update\nsudo apt upgrade\nsudo apt install nginx\nsudo apt remove nginx\nsudo apt autoremove", example:"apt list --installed | grep nginx", tool:"linux"},
+        {cat:"Package Management", title:"YUM/DNF (RHEL/CentOS/Fedora)", desc:"Package management on Red Hat-based systems.", context:"Software installation on RHEL family.", cmd:"sudo yum update\nsudo yum install nginx\nsudo dnf install nginx\nsudo yum remove nginx", example:"yum list installed | grep httpd", tool:"linux"},
+        {cat:"Text Processing", title:"Search with grep", desc:"Search text patterns in files or output.", context:"Find specific lines in logs or configs.", cmd:"grep \"error\" /var/log/syslog\ngrep -r \"function\" ./\ngrep -i \"warning\" file.log\ngrep -v \"debug\" file.log", example:"ps aux | grep nginx | grep -v grep  # find process", tool:"linux"},
+        {cat:"Text Processing", title:"Stream Editor (sed)", desc:"Find and replace text in files.", context:"Bulk text transformations.", cmd:"sed 's/old/new/g' file.txt\nsed -i 's/old/new/g' file.txt\nsed '/pattern/d' file.txt", example:"sed -i 's/localhost/127.0.0.1/g' config.conf", tool:"linux"},
+        {cat:"Text Processing", title:"AWK", desc:"Pattern scanning and processing language.", context:"Extract and format text data.", cmd:"awk '{print $1}' file.txt\nawk -F: '{print $1}' /etc/passwd\nawk '$3 > 1000 {print $1}' /etc/passwd", example:"ps aux | awk '$3 > 10 {print $2, $3, $11}'  # processes with high CPU", tool:"linux"}
+    ];
+
+    const allCommands = [...iptablesCmds, ...gitCmds, ...dockerCmds, ...linuxCmds];
+
+    const toolCategoryMap = {
+        iptables: ["All", ...new Set(iptablesCmds.map(c => c.cat))],
+        git: ["All", ...new Set(gitCmds.map(c => c.cat))],
+        docker: ["All", ...new Set(dockerCmds.map(c => c.cat))],
+        linux: ["All", ...new Set(linuxCmds.map(c => c.cat))],
+        all: ["All", ...new Set([...iptablesCmds, ...gitCmds, ...dockerCmds, ...linuxCmds].map(c => c.cat))]
+    };
+
+    let currentTool = "all";
+    let currentCategory = "All";
+    let globalSearch = "";
+
+    const container = document.getElementById("cardsContainer");
+    const searchInput = document.getElementById("globalSearch");
+    const categoryContainer = document.getElementById("categoryFilterContainer");
+    const toast = document.getElementById("toastMsg");
+
+    function showToastMsg(msg) {
+        toast.style.opacity = "1";
+        toast.innerText = msg;
+        setTimeout(() => { toast.style.opacity = "0"; }, 1500);
+    }
+
+    async function copyText(text) {
+        try {
+            await navigator.clipboard.writeText(text);
+            showToastMsg("📋 command copied to clipboard");
+        } catch(e) { showToastMsg("copy failed"); }
+    }
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
+    }
+
+    function renderFilters() {
+        let cats = toolCategoryMap[currentTool] || toolCategoryMap.all;
+        categoryContainer.innerHTML = `<div class="pill-strip">${cats.map(cat => `<span class="cat-pill ${currentCategory === cat ? 'active-cat' : ''}" data-cat="${cat}">${cat}</span>`).join("")}</div>`;
+        document.querySelectorAll(".cat-pill").forEach(pill => {
+            pill.addEventListener("click", (e) => {
+                currentCategory = pill.getAttribute("data-cat");
+                renderFilters();
+                renderCards();
+            });
+        });
+    }
+
+    function getFilteredCommands() {
+        let filtered = allCommands;
+        if (currentTool !== "all") {
+            filtered = filtered.filter(cmd => cmd.tool === currentTool);
+        }
+        if (currentCategory !== "All") {
+            filtered = filtered.filter(cmd => cmd.cat === currentCategory);
+        }
+        if (globalSearch.trim() !== "") {
+            const q = globalSearch.toLowerCase();
+            filtered = filtered.filter(cmd => 
+                cmd.title.toLowerCase().includes(q) || 
+                cmd.desc.toLowerCase().includes(q) || 
+                cmd.cmd.toLowerCase().includes(q) || 
+                (cmd.context && cmd.context.toLowerCase().includes(q)) ||
+                (cmd.example && cmd.example.toLowerCase().includes(q))
+            );
+        }
+        return filtered;
+    }
+
+    function renderCards() {
+        const filtered = getFilteredCommands();
+        if (filtered.length === 0) {
+            container.innerHTML = `<div class="no-results">⛔ no commands match — adjust filters or search 🔍</div>`;
+            return;
+        }
+        container.innerHTML = filtered.map((cmd, idx) => {
+            let toolIcon = "";
+            let toolClass = "";
+            if (cmd.tool === "iptables") { toolIcon = "🛡️"; toolClass = "tool-iptables"; }
+            else if (cmd.tool === "git") { toolIcon = "🐙"; toolClass = "tool-git"; }
+            else if (cmd.tool === "docker") { toolIcon = "🐳"; toolClass = "tool-docker"; }
+            else { toolIcon = "🐧"; toolClass = "tool-linux"; }
+            
+            return `
+            <div class="command-card" data-idx="${idx}">
+                <div class="card-header">
+                    <span class="tool-tag ${toolClass}">${toolIcon} ${cmd.tool.toUpperCase()}</span>
+                    <span class="cmd-title">${escapeHtml(cmd.title)}</span>
+                    <span class="chev">▶</span>
+                </div>
+                <div class="detail-panel">
+                    <div class="desc-text"><strong>📌 DESCRIPTION:</strong> ${escapeHtml(cmd.desc)}</div>
+                    <div class="explanation"><strong>⚡ CONTEXT & USE CASE:</strong> ${escapeHtml(cmd.context)}</div>
+                    <div class="code-box">
+                        <div style="margin-bottom:6px; font-size:0.7rem; color:#00e5ff;">🔹 COMMAND:</div>
+                        <code style="white-space:pre-wrap; font-size:0.9rem; display:block;">${escapeHtml(cmd.cmd)}</code>
+                        <button class="copy-code-btn" data-copy="${escapeHtml(cmd.cmd)}">📋 copy</button>
+                    </div>
+                    <div class="example-box">
+                        <div class="example-label">💡 PRACTICAL EXAMPLE:</div>
+                        <code style="white-space:pre-wrap; font-size:0.85rem; color:#a5f0c0;">${escapeHtml(cmd.example)}</code>
+                        <button class="copy-code-btn" data-copy="${escapeHtml(cmd.example)}" style="position:relative; top:0; right:0; margin-top:8px; display:inline-block;">📋 copy example</button>
+                    </div>
+                </div>
+            </div>`;
+        }).join("");
+        
+        document.querySelectorAll(".command-card").forEach(card => {
+            const header = card.querySelector(".card-header");
+            header.addEventListener("click", (e) => {
+                if (e.target.classList && e.target.classList.contains("copy-code-btn")) return;
+                card.classList.toggle("open");
+            });
+        });
+        document.querySelectorAll(".copy-code-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const textToCopy = btn.getAttribute("data-copy");
+                if (textToCopy) copyText(textToCopy);
+            });
+        });
+    }
+
+    function updateTool(tool) {
+        currentTool = tool;
+        currentCategory = "All";
+        document.querySelectorAll(".tool-btn").forEach(btn => {
+            if (btn.getAttribute("data-tool") === tool) btn.classList.add("active");
+            else btn.classList.remove("active");
+        });
+        renderFilters();
+        renderCards();
+    }
+
+    searchInput.addEventListener("input", (e) => {
+        globalSearch = e.target.value;
+        renderCards();
+    });
+    
+    function initToolbar() {
+        const btns = document.querySelectorAll(".tool-btn");
+        btns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const tool = btn.getAttribute("data-tool");
+                updateTool(tool);
+            });
+        });
+    }
+    
+    initToolbar();
+    updateTool("all");
+</script>
+</body>
+</html>
